@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" href="/images/logoIcon.png" type="image/png" />
+    <link rel="stylesheet" href="/styles/login-register.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Blogify - Login</title>
+  </head>
+  <body>
+    <img src="/images/logo.png" alt="logo" class="logo" />
+    <div class="container">
+      <h1>Login</h1>
+      <form action="/user/login-user" method="POST">
+        <div class="input-container">
+          <img
+            src="/images/envelope.png"
+            alt="user"
+            height="20"
+            style="margin-right: 4px"
+          />
+          <label for="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            class="entries"
+            required
+          />
+        </div>
+        <div class="input-container">
+          <img
+            src="/images/pass.png"
+            alt="password icon"
+            height="20"
+            style="margin-right: 4px"
+          />
+          <label for="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            class="entries"
+            required
+          />
+        </div>
+        <input type="submit" value="login" class="button" />
+      </form>
+      <% if(locals.err_msg) %>
+      <p style="margin-top: 30px; display: inline; color: red" class="err">
+        <%= locals.err_msg %>
+      </p>
+
+      <% if(locals.successMsg) { %>
+      <p class="sucess-msg" style="margin-top: 30px">
+        <%= locals.successMsg %>
+      </p>
+      <p class="login-msg" style="display: none; margin-top: 30px">
+        Now proceed to login
+      </p>
+      <% } %>
+    </div>
+    <script>
+      const msg = document.querySelector(".sucess-msg");
+      const loginMsg = document.querySelector(".login-msg");
+
+      const err = document.querySelector(".err");
+
+      setTimeout(() => {
+        msg.style.display = "none";
+        loginMsg.style.display = "block";
+      }, 2000);
+
+      setTimeout(() => {
+        loginMsg.style.display = "none";
+      }, 5000);
+
+      setTimeout(() => {
+        err.style.display = "none";
+      }, 2000);
+    </script>
+  </body>
+</html>

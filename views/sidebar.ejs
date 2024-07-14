@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blogify - Admin Dashboard</title>
+    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="profile-container">
+        <img src="/images/logo.png" alt="logo" />
+        <div class="container">
+          <h2><%=cuser.username %></h2>
+          <p>ID: <%= cuser._id %></p>
+        </div>
+      </div>
+
+      <ul>
+        <li>
+          <a href="/dashboard/create-post/<%=cuser.username %>"
+            ><img
+              src="/images/create.png"
+              alt="create post"
+              height="20"
+              class="sidebar-icon"
+            />Create Blog</a
+          >
+        </li>
+        <li>
+          <a href="/dashboard/view-post/<%=cuser.username %>"
+            ><img
+              src="/images/view.png"
+              alt="view post"
+              height="20"
+              class="sidebar-icon"
+            />View Blogs</a
+          >
+        </li>
+        <li>
+          <a href="/dashboard/update-post/<%= cuser.username %>"
+            ><img
+              src="/images/update.png"
+              alt="update post"
+              height="23"
+              class="sidebar-icon"
+            />Update Blog</a
+          >
+        </li>
+        <li>
+          <a href="/dashboard/delete-post/<%= cuser.username %>"
+            ><img
+              src="/images/delete.png"
+              alt="delete post"
+              height="25"
+              class="sidebar-icon"
+            />Delete Blog</a
+          >
+        </li>
+        <li>
+          <a href="/dashboard/update-profile/<%= cuser.username %>"
+            ><img
+              src="/images/update.png"
+              alt="update profile"
+              height="25"
+              class="sidebar-icon"
+            />Update Profile</a
+          >
+        </li>
+      </ul>
+      <form action="/home" method="get">
+        <button type="submit" class="button home-btn">Home</button>
+      </form>
+      <form action="/user/logout" method="get" id="logoutForm">
+        <button type="submit" class="button logout-btn">Logout</button>
+      </form>
+
+      <div id="confirmModal" class="modal">
+        <div class="modal-content">
+          <span class="close" id="closeConfirm" style="margin: 5px"
+            >&times;</span
+          >
+          <p id="confirmMessage" style="margin: 20px; color: black"></p>
+          <button id="confirmYes" class="confirm-btn">Yes</button>
+          <button id="confirmNo" class="confirm-btn">No</button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const sidebarLinks = document.querySelectorAll("ul li a");
+    let activeLink = null; // Variable to track the currently active link
+
+    // Function to set the active link
+    const setActiveLink = (link) => {
+      if (activeLink) {
+        activeLink.style.backgroundColor = "";
+      }
+      activeLink = link;
+      activeLink.style.backgroundColor = "#1da1f2";
+      localStorage.setItem("activeLink", link.getAttribute("href"));
+    };
+
+    // Set the active link from local storage on page load
+    window.addEventListener("load", () => {
+      const activeLinkHref = localStorage.getItem("activeLink");
+      if (activeLinkHref) {
+        const activeLinkElement = document.querySelector(
+          `a[href="${activeLinkHref}"]`
+        );
+        if (activeLinkElement) {
+          setActiveLink(activeLinkElement);
+        }
+      }
+    });
+
+    // Add event listeners to sidebar links
+    sidebarLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        setActiveLink(link); // Set the active link
+        // Allow the default action to occur, so the page will change
+      });
+    });
+
+    const logoutForm = document.getElementById("logoutForm");
+    const logoutBtn = document.querySelector(".logout-btn");
+
+    const confirmModal = document.getElementById("confirmModal");
+    const confirmYes = document.getElementById("confirmYes");
+    const confirmNo = document.getElementById("confirmNo");
+
+    if (logoutForm && logoutBtn && confirmModal && confirmNo && confirmYes) {
+      closeConfirm.onclick = function () {
+        confirmModal.style.display = "none";
+      };
+      confirmYes.onclick = function () {
+        console.log("Confirmed");
+        confirmModal.style.display = "none";
+        logoutForm.submit();
+      };
+      confirmNo.onclick = function () {
+        console.log("Cancelled");
+        confirmModal.style.display = "none";
+        logoutForm.reset();
+      };
+
+      logoutBtn.addEventListener("click", () => {
+        console.log("Clicked");
+        document.getElementById("confirmMessage").textContent =
+          "Are you sure you want to Logout?";
+        confirmModal.style.display = "block";
+      });
+    }
+  </script>
+</html>

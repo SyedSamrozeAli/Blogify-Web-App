@@ -1,0 +1,110 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background: url(../images/background.jpg) no-repeat center center;
+  background-position: center; */
+  /* background-color: rgba(255, 255, 255, 0.4); */
+  background: linear-gradient(-106deg, #4cb5f7, #002147 95%);
+  position: relative;
+  flex-wrap: wrap;
+  height: 100%;
+}
+
+.logo {
+  border-right: 1px solid white;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  border-radius: 30px 0px 30px 0px;
+  background-color: rgba(255, 255, 255, 0.842);
+  border: 3px solid #002147;
+  position: relative;
+  color: #002147;
+  margin: 100px;
+}
+
+h1 {
+  margin-bottom: 50px;
+  font-size: 3.4vw;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.button {
+  /* padding: 15px; */
+  width: 11vw;
+  height: 8vh;
+  background-color: #1da1f2;
+  color: black;
+  border-radius: 12px 0px 12px 0px;
+  border: none;
+  font-family: "Rubik", sans-serif;
+  cursor: pointer;
+  font-size: 1.9vw;
+  text-align: center;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.button:hover {
+  background-color: white;
+  border: 3px solid #002147;
+}
+
+.entries {
+  border-radius: 10px 0px 10px 0px;
+  height: 3vw;
+  width: 26vw;
+  border: none;
+  margin-bottom: 20px;
+  margin-top: 8px;
+  padding: 10px;
+  font-size: 1.5vw;
+  font-family: "Rubik", sans-serif;
+  border: 2px solid #002147;
+  display: block;
+}
+
+label {
+  font-size: 1.5vw;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.input-container {
+  display: block;
+}
+
+::file-selector-button {
+  background-color: white;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  border-right: 1px solid #1da1f2;
+  font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+}
+
+#profileImg {
+  font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+}

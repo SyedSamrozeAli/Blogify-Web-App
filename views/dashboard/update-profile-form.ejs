@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include("../partials/head.ejs") %>
+    <style>
+      ::file-selector-button {
+        background-color: white;
+        padding: 7px;
+        cursor: pointer;
+        border: none;
+        border-right: 1px solid #1da1f2;
+        font-family: "Rubik", sans-serif;
+        font-optical-sizing: auto;
+      }
+
+      #profileImg {
+        font-family: "Rubik", sans-serif;
+        font-optical-sizing: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bcontainer">
+      <%- include("../sidebar.ejs") %>
+      <div class="content">
+        <h1>Update Profile</h1>
+        <%if(locals.successMsg || locals.duplicateErrMsg){ %>
+        <div id="myModal" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <p><%= locals.successMsg %></p>
+            <p><%= locals.duplicateErrMsg %></p>
+          </div>
+        </div>
+        <% } %> <% const url=`/dashboard/update-profile/${cuser.username}`; %>
+        <form
+          action="/dashboard/update-profile/<%=cuser.username%>"
+          method="POST"
+          id="updateForm"
+          enctype="multipart/form-data"
+        >
+          <div class="input-container">
+            <img src="/images/user.png" alt="user" height="20" />
+            <label for="name">Full Name</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              class="entries"
+              value="<%=cuser.name %>"
+              required
+            />
+          </div>
+          <div class="input-container">
+            <img src="/images/user.png" alt="user" height="20" />
+            <label for="username">Username</label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              class="entries"
+              value="<%=cuser.username %>"
+              required
+            />
+          </div>
+          <div class="input-container">
+            <img src="/images/envelope.png" alt="email" height="20" />
+            <label for="email">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="entries"
+              value="<%=cuser.email %>"
+              required
+            />
+          </div>
+          <div class="input-container">
+            <img src="/images/pass.png" alt="password" height="20" />
+            <label for="password">Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="entries"
+              required
+            />
+          </div>
+          <div class="input-container">
+            <label
+              for="files"
+              class="btn"
+              style="display: block; font-size: 1.2vw"
+              >Select Profile Image</label
+            >
+            <input
+              type="file"
+              id="profileImg"
+              name="profileImg"
+              value="<%=cuser.profileImageURL %>"
+              aria-describedby="profileImg"
+              style="
+                background-color: white;
+                border-radius: 4px;
+                border: 1px solid #1da1f2;
+              "
+            />
+          </div>
+
+          <input type="submit" value="Update" class="button" />
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        if (modal && span) {
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function () {
+            modal.style.display = "none";
+          };
+
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function (event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
+            }
+          };
+        }
+      });
+    </script>
+  </body>
+</html>

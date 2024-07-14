@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blogify</title>
+
+    <link rel="icon" href="/images/logoIcon.png" type="image/png" />
+    <link rel="stylesheet" href="/styles/home.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      .temp-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px 20px;
+      }
+
+      .temp-container button {
+        padding: 0px 13px;
+        border-radius: 5px;
+        width: max-content;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="bg-img">
+      <div class="big-container">
+        <%- include("nav-bar.ejs") %>
+        <div class="bcontainer">
+          <%- include("home-bar.ejs") %>
+          <div class="content">
+            <section id="all-blogs">
+              <div class="view-content">
+                <div class="temp-container">
+                  <h1>All Blogs</h1>
+                  <button id="toggle-latest" class="button logout-btn">
+                    Show Latest
+                  </button>
+                </div>
+                <div id="blog-container" class="all-post-container">
+                  <%if (locals.noPostMsg) { %>
+                  <h2 style="font-weight: 400"><%= locals.noPostMsg %></h2>
+                  <% } else { let value = 0; allBlogs.forEach((blog) => { %>
+                  <div class="post" data-date="<%= blog.createdAt %>">
+                    <h3><%= blog.title %></h3>
+                    <p style="color: #007bff">
+                      <span style="font-weight: 500">Created by:</span>
+                      <%= blog.authorID.username %>
+                    </p>
+                    <p style="color: rgba(119, 119, 119, 0.76)">
+                      <span style="font-weight: 500">Created at:</span>
+                      <span
+                        class="date"
+                        data-date="<%= blog.createdAt %>"
+                      ></span>
+                    </p>
+                    <p style="margin: 10px 0px; color: rgba(99, 99, 99, 0.904)">
+                      No.of Comments: <%= blog.comments.length %>
+                    </p>
+                    <form action="/home/view-blog/<%= blog._id %>">
+                      <button class="button blog-btn" type="submit">
+                        Show full Blog
+                      </button>
+                    </form>
+                  </div>
+                  <% value++; }); } %>
+                </div>
+              </div>
+            </section>
+            <div class="nav-content" style="display: none">
+              <%- include("nav-bar-content.ejs") %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toDateString() + " " + date.toTimeString().split(" ")[0];
+      }
+
+      // Apply date formatting to all elements with the class 'date'
+      const dateElements = document.querySelectorAll(".date");
+      dateElements.forEach((el) => {
+        const dateString = el.getAttribute("data-date");
+        el.textContent = formatDate(dateString);
+      });
+
+      const sidebar_Links = document.querySelectorAll("ul li a");
+      let activeLink = null; // Variable to track the currently active link
+
+      // Function to set the active link
+      const setActiveLink = (link) => {
+        if (activeLink) {
+          activeLink.style.backgroundColor = "";
+        }
+        activeLink = link;
+        activeLink.style.backgroundColor = "#1da1f2";
+        localStorage.setItem("activeLink", link.getAttribute("href"));
+      };
+
+      // Set the active link from local storage on page load
+      window.addEventListener("load", () => {
+        const activeLinkHref = localStorage.getItem("activeLink");
+        if (activeLinkHref) {
+          const activeLinkElement = document.querySelector(
+            `a[href="${activeLinkHref}"]`
+          );
+          if (activeLinkElement) {
+            setActiveLink(activeLinkElement);
+          }
+        }
+      });
+
+      // Add event listeners to sidebar links
+      sidebar_Links.forEach((link) => {
+        link.addEventListener("click", (event) => {
+          setActiveLink(link); // Set the active link
+          // Allow the default action to occur, so the page will change
+        });
+      });
+
+      // Function to show the content section based on the target id
+      function showSection(targetId) {
+        const sections = document.querySelectorAll(".content section");
+        sections.forEach((section) => {
+          section.style.display = "none";
+        });
+        document.getElementById(targetId).style.display = "block";
+      }
+
+      // Add click event listeners to nav links
+      const navLinks = document.querySelectorAll(".nav-link");
+      const navContent = document.querySelector(".nav-content");
+      navLinks.forEach((link) => {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          navContent.style.display = "block";
+          const targetId = this.getAttribute("data-target");
+          showSection(targetId);
+        });
+      });
+
+      // Show the default section
+      const container = document.getElementById("blog-container");
+      const originalBlogs = Array.from(container.children); // Store the original order of the blogs
+
+      // Toggle functionality for showing latest blogs
+      document.getElementById("toggle-latest").addEventListener("click", () => {
+        const button = document.getElementById("toggle-latest");
+
+        if (button.textContent === "Show Latest") {
+          button.textContent = "Show Default";
+          // Sort and display latest blogs
+          const sortedBlogs = originalBlogs.slice().sort((a, b) => {
+            return (
+              new Date(b.getAttribute("data-date")) -
+              new Date(a.getAttribute("data-date"))
+            );
+          });
+          container.innerHTML = "";
+          sortedBlogs.forEach((blog) => container.appendChild(blog));
+        } else {
+          button.textContent = "Show Latest";
+          // Revert to default order
+          container.innerHTML = "";
+          originalBlogs.forEach((blog) => container.appendChild(blog));
+        }
+      });
+    </script>
+  </body>
+</html>

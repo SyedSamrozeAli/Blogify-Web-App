@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" href="/images/logoIcon.png" type="image/png" />
+    <link rel="stylesheet" href="/styles/login-register.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Blogify - Register</title>
+  </head>
+  <body>
+    <img src="/images/logo.png" alt="logo" class="logo" />
+    <div class="container">
+      <h1>Register</h1>
+      <form
+        action="/user/register-user"
+        method="POST"
+        id="registerForm"
+        enctype="multipart/form-data"
+      >
+        <div class="input-container">
+          <img src="/images/user.png" alt="user" height="20" />
+          <label for="name">Full Name</label>
+          <input type="text" name="name" id="name" class="entries" required />
+        </div>
+        <div class="input-container">
+          <img src="/images/user.png" alt="user" height="20" />
+          <label for="username">Username</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            class="entries"
+            required
+          />
+        </div>
+        <div class="input-container">
+          <img src="/images/envelope.png" alt="email" height="20" />
+          <label for="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            class="entries"
+            required
+          />
+        </div>
+        <div class="input-container">
+          <img src="/images/pass.png" alt="password" height="20" />
+          <label for="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            class="entries"
+            required
+          />
+        </div>
+        <div class="input-container">
+          <label
+            for="files"
+            class="btn"
+            style="display: block; font-size: 1.2vw"
+            >Select Profile Image</label
+          >
+          <input
+            type="file"
+            id="profileImg"
+            name="profileImg"
+            aria-describedby="profileImg"
+            style="
+              background-color: white;
+              border-radius: 4px;
+              border: 1px solid #1da1f2;
+            "
+          />
+        </div>
+
+        <input type="submit" value="Register" class="button" />
+      </form>
+
+      <% if(locals.msg) %>
+      <i
+        ><p class="msg" style="margin-top: 30px; color: red">
+          <%= locals.msg %>
+        </p></i
+      >
+      <% if(locals.duplicateErrMsg) %>
+      <i
+        ><p class="msg" style="margin-top: 30px; color: red">
+          <%= locals.duplicateErrMsg %>
+        </p></i
+      >
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const duplicateErrMsg =
+          "<%= locals.duplicateErrMsg ? locals.duplicateErrMsg : '' %>";
+        const msg = "<%= locals.msg ? locals.msg : '' %>";
+        if (duplicateErrMsg || msg) {
+          document.getElementById("registerForm").reset();
+        }
+        const msg1 = document.querySelector(".msg");
+
+        setTimeout(() => {
+          msg1.style.display = "none";
+        }, 2000);
+      });
+    </script>
+  </body>
+</html>

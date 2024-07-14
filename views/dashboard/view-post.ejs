@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("../partials/head.ejs") %>
+</head>
+
+<body>
+  <div class="bcontainer">
+    <%- include("../sidebar.ejs") %>
+      <div class="content view-content">
+        <h1>View Blogs</h1>
+        <div class="all-post-container">
+          <% if(locals.noPostMsg){ %>
+            <h2 style="font-weight: 400;">
+              <%= locals.noPostMsg %>
+                </h3>
+                <% }else { console.log(blogs) ; let value=0; blogs.forEach((blog)=>{
+                  %>
+                  <div class="post">
+                    <h3>
+                      <%= blog.title %>
+                    </h3>
+                    <p style="color: rgba(119, 119, 119, 0.76)">
+                      <span style="font-weight: 500">Created at:</span>
+                      <span class="date" data-date="<%= blog.createdAt %>"></span>
+                    </p>
+                    <div id="<%= value %>" class="blog-content" style="display: none">
+                      <%- blog.content %>
+                    </div>
+                    <button id="<%= value %>" class="button blog-btn">
+                      Show full Blog
+                    </button>
+                  </div>
+                  <% value++;})} %>
+        </div>
+      </div>
+  </div>
+  <%- include("../partials/view-content-JS.ejs") %>
+    <script>
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return (
+          date.toDateString() + " " + date.toTimeString().split(" ")[0]
+        );
+      }
+
+      // Apply date formatting to all elements with the class 'date'
+      const dateElements = document.querySelectorAll(".date");
+      dateElements.forEach((el) => {
+        const dateString = el.getAttribute("data-date");
+        el.textContent = formatDate(dateString);
+      });
+    </script>
+</body>
+
+</html>

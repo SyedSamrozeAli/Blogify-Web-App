@@ -1,0 +1,21 @@
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const blogBtns = document.querySelectorAll(".blog-btn");
+    const contentContainers = document.querySelectorAll(".blog-content");
+
+    blogBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const btnId = btn.getAttribute("id");
+        const content = document.getElementById(btnId);
+
+        if (content.style.display === "none" || content.style.display === "") {
+          btn.innerHTML = "Show less";
+          content.style.display = "block";
+        } else {
+          btn.innerHTML = "Show full Blog";
+          content.style.display = "none";
+        }
+      });
+    });
+  });
+</script>

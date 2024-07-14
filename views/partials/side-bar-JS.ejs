@@ -1,0 +1,65 @@
+<script>
+  const sidebarLinks = document.querySelectorAll("ul li a");
+  let activeLink = null; // Variable to track the currently active link
+
+  // Function to set the active link
+  const setActiveLink = (link) => {
+    if (activeLink) {
+      activeLink.style.backgroundColor = "";
+    }
+    activeLink = link; // #243e5a
+    activeLink.style.backgroundColor = "#1da1f2";
+    localStorage.setItem("activeLink", link.getAttribute("href"));
+  };
+
+  // Set the active link from local storage on page load
+  window.addEventListener("load", () => {
+    const activeLinkHref = localStorage.getItem("activeLink");
+    if (activeLinkHref) {
+      const activeLinkElement = document.querySelector(
+        `a[href="${activeLinkHref}"]`
+      );
+      if (activeLinkElement) {
+        setActiveLink(activeLinkElement);
+      }
+    }
+  });
+
+  // Add event listeners to sidebar links
+  sidebarLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      setActiveLink(link); // Set the active link
+      // Allow the default action to occur, so the page will change
+    });
+  });
+
+  const logoutForm = document.getElementById("logoutForm");
+  const logoutBtn = document.querySelector(".logout-btn");
+
+  const confirmModal = document.getElementById("confirmModal");
+  const confirmYes = document.getElementById("confirmYes");
+  const confirmNo = document.getElementById("confirmNo");
+
+  if (logoutForm && logoutBtn && confirmModal && confirmNo && confirmYes) {
+    closeConfirm.onclick = function () {
+      confirmModal.style.display = "none";
+    };
+    confirmYes.onclick = function () {
+      console.log("Confirmed");
+      confirmModal.style.display = "none";
+      logoutForm.submit();
+    };
+    confirmNo.onclick = function () {
+      console.log("Cancelled");
+      confirmModal.style.display = "none";
+      logoutForm.reset();
+    };
+
+    logoutBtn.addEventListener("click", () => {
+      console.log("Clicked");
+      document.getElementById("confirmMessage").textContent =
+        "Are you sure you want to Logout?";
+      confirmModal.style.display = "block";
+    });
+  }
+</script>

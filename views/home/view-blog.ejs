@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blogify</title>
+
+    <link rel="icon" href="/images/logoIcon.png" type="image/png" />
+    <link rel="stylesheet" href="/styles/home.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .big-container {
+        /* height: 100vh; */
+        padding: 50px;
+        background-color: rgba(255, 255, 255, 0.836);
+        box-sizing: border-box;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .big-img {
+        /* height: 100vh; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 40px;
+        padding-right: 50px;
+      }
+
+      h1 {
+        margin: 10px 0px;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(141, 141, 141, 0.815);
+      }
+
+      .blog-content {
+        margin-top: 20px;
+      }
+
+      .button {
+        font-size: 1.2vw;
+        width: 7.8vw;
+        height: 5.8vh;
+        border-radius: 5px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      textarea {
+        border-radius: 7px;
+        padding: 10px;
+        width: 50%;
+        border: 1px solid blue;
+      }
+
+      .comments-section {
+        margin: 20px 0px;
+        padding: 10px;
+        width: 50%;
+        border-radius: 7px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: white;
+        border: 1px solid blue;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="bg-img">
+      <div class="big-container">
+        <% if(!locals.blog){ %>
+        <h2>Error in Displaying Blog</h2>
+        <% }else{ %>
+
+        <h1><%= blog.title %></h1>
+        <p style="color: #007bff">
+          <span style="font-weight: 500">Created by:</span>
+          <%= blog.authorID.username %>
+        </p>
+        <p style="color: rgba(119, 119, 119, 0.76)">
+          <span style="font-weight: 500">Created at:</span>
+          <span class="date" data-date="<%= blog.createdAt %>"></span>
+        </p>
+
+        <div class="blog-content"><%- blog.content %></div>
+        <div class="comments-section">
+          <%if(!locals.blog.comments){ %>
+          <p>No Comments</p>
+          <% } else { %>
+          <p style="margin-bottom: 10px; color: rgba(99, 99, 99, 0.904)">
+            No.of comments: <%= blog.comments.length; %>
+          </p>
+          <% blog.comments.forEach((comment)=>{ %>
+          <p><%= comment.content %></p>
+          <i
+            ><p style="font-weight: 400; color: #007bff; margin-bottom: 10px">
+              <%= comment.madeBy.username %>
+            </p></i
+          >
+          <% }) } %>
+        </div>
+        <form action="/home/comments/<%= blog._id%>" method="POST">
+          <textarea
+            name="comments"
+            id="comments"
+            placeholder="Enter your comments"
+          ></textarea>
+          <button type="submit" class="button">Submit</button>
+        </form>
+        <% } %>
+      </div>
+    </div>
+
+    <script>
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toDateString() + " " + date.toTimeString().split(" ")[0];
+      }
+
+      // Apply date formatting to all elements with the class 'date'
+      const dateElements = document.querySelectorAll(".date");
+      dateElements.forEach((el) => {
+        const dateString = el.getAttribute("data-date");
+        el.textContent = formatDate(dateString);
+      });
+    </script>
+  </body>
+</html>

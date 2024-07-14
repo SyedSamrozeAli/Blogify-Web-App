@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<%- include("../partials/head.ejs") %>
+</head>
+
+<body>
+  <div class="bcontainer">
+    <%- include("../sidebar.ejs") %>
+    <div class="content">
+      <h1>Delete Blog</h1>
+      <% if(locals.msg){ %>
+
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p><%= locals.msg %></p>
+        </div>
+      </div>
+      <% } %>
+      <% const url=`/dashboard/delete-post/:${cuser.username}`; %>
+      <form action="<%=url %>" method="POST" id="deleteForm">
+        <% if(locals.noPostMsg){ %>
+        <h2 style="font-weight: 400; margin-top: 50px;"><%= locals.noPostMsg %></h3>
+          <% }else{console.log(blogs) ; let value=0; blogs.forEach((blog)=>{ %>
+          <div class="post delete-post">
+            <input type="checkbox" name="options" id="checkbox" value="<%= blog._id %>">
+            <h3><%= blog.title %></h3>
+          </div>
+          <% value++;}) %>
+          <button type="button" class="button delete-btn">Delete</button>
+          <!-- <input type="submit" value="delete"> -->
+          <% }%>
+      </form>
+      <div id="confirmModal" class="modal">
+        <div class="modal-content">
+          <span class="close" id="closeConfirm" style="margin: 5px;">&times;</span>
+          <p id="confirmMessage" style="margin: 20px;"></p>
+          <button id="confirmYes" class="confirm-btn" >Yes</button>
+          <button id="confirmNo" class="confirm-btn" >No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+      var modal = document.getElementById("myModal");
+
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+      
+      if (modal && span) {
+
+        // Get the modal
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modal.style.display = "none";
+        };
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        };
+      }
+      const deleteForm = document.getElementById("deleteForm");
+      const deleteBtn = document.querySelector(".delete-btn");
+
+      const confirmModal = document.getElementById("confirmModal");
+      const confirmYes = document.getElementById("confirmYes");
+      const confirmNo = document.getElementById("confirmNo");
+
+      if(deleteForm && deleteBtn && confirmModal && confirmNo && confirmYes){
+
+        closeConfirm.onclick = function() {
+          confirmModal.style.display = "none";
+        };
+        confirmYes.onclick = function() {
+          console.log("Confirmed");
+          confirmModal.style.display = "none";
+          deleteForm.submit();
+        };
+        confirmNo.onclick = function() {
+          console.log("Cancelled");
+          confirmModal.style.display = "none";
+          deleteForm.reset();
+        };
+  
+        deleteBtn.addEventListener('click',()=>{
+          console.log("Clicked");
+          document.getElementById("confirmMessage").textContent = "Are you sure you want to delete?";
+          confirmModal.style.display = "block";
+        })
+      }
+    });
+  </script>
+</body>
+
+</html>

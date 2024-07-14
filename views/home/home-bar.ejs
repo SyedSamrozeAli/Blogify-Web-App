@@ -1,0 +1,126 @@
+<div class="sidebar">
+  <div class="profile-container">
+    <img
+      src="<%= cuser.profileImageURL %>"
+      alt="profile-image"
+      style="border-radius: 50%"
+      height="80"
+      width="100"
+    />
+    <div class="container">
+      <h2><%= cuser.username %></h2>
+      <p>ID: <%= cuser._id %></p>
+    </div>
+    <div class="follower-container">
+      <p>Followers: <%= cuser.followers.length %></p>
+      <p>Following: <%= cuser.following.length %></p>
+    </div>
+  </div>
+  <ul>
+    <li>
+      <a href="/dashboard/<%=cuser.username %>">
+        <img
+          src="/images/create.png"
+          alt="create post"
+          height="20"
+          class="sidebar-icon"
+        />Dashboard</a
+      >
+    </li>
+    <li>
+      <a
+        href="/home/view-all-blogs/<%=cuser.username %>"
+        class="sidebar-link"
+        data-target="all-blogs"
+        ><img
+          src="/images/view.png"
+          alt="view post"
+          height="20"
+          class="sidebar-icon"
+        />All Blogs</a
+      >
+    </li>
+    <li>
+      <a
+        href="/home/view-my-blogs/<%=cuser.username %>"
+        class="sidebar-link"
+        data-target="my-blogs"
+        ><img
+          src="/images/update.png"
+          alt="my blogs"
+          height="23"
+          class="sidebar-icon"
+        />My Blogs</a
+      >
+    </li>
+    <li>
+      <a
+        href="/home/view-my-comments/<%=cuser.username %>"
+        class="sidebar-link"
+        data-target="my-comments"
+        ><img
+          src="/images/comments.png"
+          alt="comment"
+          height="25"
+          class="sidebar-icon"
+        />My Comments</a
+      >
+    </li>
+    <li>
+      <a
+        href="/home/search-page/<%=cuser.username %>"
+        class="sidebar-link"
+        data-target="search-blogs"
+        ><img
+          src="/images/search.png"
+          alt="search post"
+          height="25"
+          class="sidebar-icon"
+        />Search</a
+      >
+    </li>
+  </ul>
+  <form action="/user/logout" method="get" id="logoutForm">
+    <button type="button" class="button logout-btn">Logout</button>
+  </form>
+  <div id="confirmModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeConfirm" style="margin: 5px">&times;</span>
+      <p id="confirmMessage" style="margin: 20px; color: black"></p>
+      <button id="confirmYes" class="confirm-btn">Yes</button>
+      <button id="confirmNo" class="confirm-btn">No</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const logoutForm = document.getElementById("logoutForm");
+  const logoutBtn = document.querySelector(".logout-btn");
+
+  const confirmModal = document.getElementById("confirmModal");
+  const confirmYes = document.getElementById("confirmYes");
+  const confirmNo = document.getElementById("confirmNo");
+
+  if (logoutForm && logoutBtn && confirmModal && confirmNo && confirmYes) {
+    closeConfirm.onclick = function () {
+      confirmModal.style.display = "none";
+    };
+    confirmYes.onclick = function () {
+      console.log("Confirmed");
+      confirmModal.style.display = "none";
+      logoutForm.submit();
+    };
+    confirmNo.onclick = function () {
+      console.log("Cancelled");
+      confirmModal.style.display = "none";
+      logoutForm.reset();
+    };
+
+    logoutBtn.addEventListener("click", () => {
+      console.log("Clicked");
+      document.getElementById("confirmMessage").textContent =
+        "Are you sure you want to Logout?";
+      confirmModal.style.display = "block";
+    });
+  }
+</script>
